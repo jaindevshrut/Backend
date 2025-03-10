@@ -1,6 +1,11 @@
 # Model Reference 
 - [Model Link](https://app.eraser.io/workspace/HT6FQB8prIWyBYtLDVVv?origin=share)
 
+Feature	                        export default	                    export { ApiError }
+Number of exports	            Only one per module	                Can have multiple
+Import name flexibility	        Can import with any name	        Must use exact name (or alias it)
+Import syntax	                import AnyName from '...'	        import { ApiError } from '...'
+
 
 many times it will happen that we will create an empty folder and we want to push that folder. But git tracks the file so we will create a .gitkeep file inside that folder so that it starts the tracking of the folder
 
@@ -20,3 +25,13 @@ jis file ko sabse pehle hum run krne wale h usme ham sabse pehle env ko inport k
 
 kyuki ham consistency maintain krke rkhe h code me isliye ham import dotenv from "dotenv"
 dotenv.config({path: "../env"}) use kr rahe index.js me aur uske liye hame nodemon -r dotenv/config use krna padega package.json file me
+
+
+we will be using cors for cross origin access and cookie-parser
+
+different different methods of creating asyncHandler
+
+node js hame Error ki class deta for standardarizing the error sending check ApiErrors
+
+Now we need to use this error as middleware so that errors are handled by this ApiError and ApiResponses
+
