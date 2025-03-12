@@ -35,3 +35,16 @@ node js hame Error ki class deta for standardarizing the error sending check Api
 
 Now we need to use this error as middleware so that errors are handled by this ApiError and ApiResponses
 
+if want to make any field searchable then making index is good practice
+
+# npm i mongoose-aggregate-paginate-v2
+mongoDb true power comes from the mongodb aggregation framework, it give the full power of mongodb. it is mainly used for getting the data on the spefic requirement. like get all person with the gender male
+
+# bcrypt
+it is being used to encrypt password and decrpyt password. There are two packages bcrypt and bcryptjs both has both adv and dis-adv
+
+# jwt
+jwt or jsonwebtoken it is a brearer token 
+
+# hooks
+moongoose provide hooks(functions for the database  ) which can be used before saving the data in the database, after deleting the data, before deleting etc. 
