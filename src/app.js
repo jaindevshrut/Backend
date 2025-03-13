@@ -13,4 +13,11 @@ app.use(express.urlencoded({extended: true})) // using for parsing the form data
 app.use(express.static("public")) // using for serving the static files
 app.use(cookieParser()) // using for parsing the cookies
 
+
+// Routes import
+import userRouter from './routes/user.routes.js'
+
+// routes declaration
+app.use("/api/v1/users",userRouter)
+
 export default app
