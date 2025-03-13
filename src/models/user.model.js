@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar : {
         type : String, // cloudinary url
-        default : "https://res.cloudinary.com/dkkgmzpqd/image/upload/v1632821434/avatars/avatar-1577909_1280",
+        default : "https://www.svgrepo.com/svg/452030/avatar-default",
     },
     coverImage : {
         type : String
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
 },{timestamps: true});
 userSchema.pre("save",async function(next){
     if(this.isModified("password")){
-        this.password = bcrypt.hash(this.password,10)
+        this.password = await bcrypt.hash(this.password,10)
     } // isme hame string hi pass krni pdti h 
     next()
 }) // everytime if there is save change in the databse then it will again hash the password but we want that 
