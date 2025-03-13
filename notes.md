@@ -48,3 +48,6 @@ jwt or jsonwebtoken it is a brearer token
 
 # hooks
 moongoose provide hooks(functions for the database  ) which can be used before saving the data in the database, after deleting the data, before deleting etc. 
+
+# multer and clodinary
+they both will be going to be used for uploading and saving files
