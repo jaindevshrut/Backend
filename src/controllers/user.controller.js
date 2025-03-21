@@ -1,7 +1,7 @@
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
-import {uploadOnCloudinary} from "../utils/cloudinary.js"
+import {deleteFromCloudinary, uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
@@ -138,8 +138,8 @@ const logoutUser = asyncHandler(async (req,res)=>{
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set : {
-                refreshToken: undefined
+            $unset : {
+                refreshToken: 1 // this removes the field from the document
             }
         },
         {
@@ -204,6 +204,7 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
 })
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
+    console.log(req.user.avatar)
     return res
     .status(200)
     .json(new ApiResponse(200,res.user,"User details fetched successfully"))
@@ -238,12 +239,17 @@ const updateUserAvatar = asyncHandler(async(req,res) => {
     if(!avatarLocalPath){
         return new ApiError(400, "Avatar file is missing")
     }
-    // TODO: delete old avatar image from Cloudinary left
+    /* 
+    TODO: delete old avatar image from Cloudinary left 
+    //* Done 
+    // */
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
     if(!avatar.url){
         throw new ApiError(400,"Error while uploading avatar")
     }
+    const deleteResponce = await deleteFromCloudinary(req.user?.avatar)
+    console.log(deleteResponce)
     const user = await User.findByIdAndUpdate(
         req.user?._id,
     {
@@ -267,6 +273,8 @@ const updateUserCoverImage = asyncHandler(async(req,res) => {
     if(!coverImage.url){
         throw new ApiError(400,"Error while uploading Cover Image")
     }
+    const deleteResponce = await deleteFromCloudinary(req.user?.coverImage)
+    console.log(deleteResponce)
     const user = await User.findByIdAndUpdate(
         req.user?._id,
     {

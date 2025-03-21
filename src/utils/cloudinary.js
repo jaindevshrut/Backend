@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import fs from 'fs'
-
+import { extractPublicId } from 'cloudinary-build-url'
 cloudinary.config({ 
     cloud_name: `${process.env.CLOUDINARY_CLOUD_NAME}`, 
     api_key: `${process.env.CLODINARY_API_KEY}`, 
@@ -25,4 +25,16 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
-export {uploadOnCloudinary}
+const deleteFromCloudinary = async(imageUrl) => {
+    try {
+        if(!imageUrl) throw "Image Url not correct"
+        const publicId = extractPublicId(imageUrl)
+        const response = await cloudinary.uploader.destroy(publicId)
+        console.log("File deleted successfully from cloudinary",response )
+        return response
+    }catch(error) {
+        return error;
+    }
+}
+
+export {uploadOnCloudinary,deleteFromCloudinary}
