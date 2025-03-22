@@ -113,7 +113,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     if(!commentId?.trim() || !mongoose.Types.ObjectId.isValid(commentId)){
         throw new ApiError(400,"Invalid Comment Id") 
     }
-    const comment = await Comment.findById(commentId).select("owner")
+    const comment = await Comment.findById(commentId).select("-video")
     if(!comment){
         throw new ApiError(404,"Comment Not Found")
     }
@@ -121,13 +121,17 @@ const deleteComment = asyncHandler(async (req, res) => {
     if(req.user._id.toString() !== comment.owner.toString()){
         throw new ApiError(403,"You are not allowed to delete this comment")
     }
-    const deletedComment = await Comment.findByIdAndDelete(commentId)
-    if(!deletedComment){
-        throw new ApiError(500,"Failed to delete comment")
+    try {
+        const deletedComment = await Comment.findByIdAndDelete(comment._id);
+        if (!deletedComment) {
+            throw new ApiError(404, "Comment not found");
+        }
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Comment deleted successfully"));
+    } catch (error) {
+        throw new ApiError(500, "Internal Server Error");
     }
-     return res
-     .status(200)
-     .json(new ApiResponse(200,{},"Comment deleted successfully"))
 })
 
 export {
