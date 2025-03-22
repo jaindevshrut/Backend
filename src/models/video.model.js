@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"; // bahut sare data ko page wise divide karne ke liye
 const videoSchema = new mongoose.Schema({
     videFile : {
         type : String,
@@ -36,5 +36,5 @@ const videoSchema = new mongoose.Schema({
 },{timestamps: true});
 
 
-videoSchema.plugin(mongooseAggregatePaginate)
+videoSchema.plugin(mongooseAggregatePaginate) // this is used to paginate the data (kaha se kaha tak data de rha h)
 export const Video = mongoose.model('Video', videoSchema);
