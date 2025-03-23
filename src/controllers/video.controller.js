@@ -77,7 +77,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
     if(req.user._id.toString() !== video.owner.toString()){
         throw new ApiError(403,"You are not allowed to delete this video")
     }
-    await video.remove()
+    await Video.findByIdAndDelete(videoId)
     return res
     .status(200)
     .json(new ApiResponse(200,{},"Video deleted successfully"))
