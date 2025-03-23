@@ -4,7 +4,7 @@ import {User} from "../models/user.model.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {uploadOnCloudinary } from "../utils/cloudinary.js"
+import {uploadOnCloudinary,deleteVideoFromCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js"
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -128,17 +128,17 @@ const publishAVideo = asyncHandler(async (req, res) => {
       if (!video) {
         throw new ApiError(500, "Something went wrong while uploading a video");
       } 
+      if (videoFile) {
+        await deleteVideoFromCloudinary(videoFile.url);
+      } 
+      if (thumbnailFile) {
+        await deleteFromCloudinary(thumbnailFile.url);
+      } 
       return res
         .status(200)
         .json(new ApiResponse(200, video, "Video uploaded successfully"));
     } catch (error) {
       console.log("Error while uploading a video", error);  
-      if (videoFile) {
-        await deleteFromCloudinary(videoFile.public_id);
-      } 
-      if (thumbnailFile) {
-        await deleteFromCloudinary(thumbnailFile.public_id);
-      } 
       throw new ApiError(
         500,
         "Something went wrong while uploading the video and video file and thumbnail deleted"
