@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"; // bahut sare data ko page wise divide karne ke liye
 const videoSchema = new mongoose.Schema({
-    videFile : {
+    videoFile : {
         type : String,
-        required : true,
+        required : [true, "Video file is required"],
     },
     thumbnail : {
         type : String,

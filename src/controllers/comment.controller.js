@@ -14,7 +14,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(videoId)){
         throw new ApiError(400,"Invalid Video Id")
     }
-    const totalComments = await Comment.countDocuments({video:mongoose.Types.ObjectId(videoId)})
+    const totalComments = await Comment.countDocuments({video: new mongoose.Types.ObjectId(videoId)})
     const totalPages = Math.ceil(totalComments / limit);
     const comments = await Comment.aggregate([
         {
@@ -57,12 +57,11 @@ const getVideoComments = asyncHandler(async (req, res) => {
     }
     return res
     .status(200)
-    .json(new ApiResponse(200,{comments,totalComments},"Comments fetched successfully"))
+    .json(new ApiResponse(200,{comments,totalComments, totalPages},"Comments fetched successfully"))
 
 })
 
 const addComment = asyncHandler(async (req, res) => {
-    // TODO: add a comment to a video
     const {videoId} = req.params
     const {text} = req.body
     if(!text?.trim()){
@@ -70,8 +69,8 @@ const addComment = asyncHandler(async (req, res) => {
     }
     const comment = await Comment.create({
         content: text,
-        owner: req.user._id,
-        video: mongoose.Types.ObjectId(videoId)
+        owner: req.user?._id,
+        video: new mongoose.Types.ObjectId(videoId)
     })
     const foundComment = await Comment.findById(comment._id);
     if(!foundComment){
@@ -83,7 +82,7 @@ const addComment = asyncHandler(async (req, res) => {
 })
 
 const updateComment = asyncHandler(async (req, res) => {
-    // TODO: update a comment
+
     const {commentId} = req.params
     const {text} = req.body
     if(!text?.trim()){

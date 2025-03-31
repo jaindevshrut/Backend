@@ -37,35 +37,32 @@ const getUserTweets = asyncHandler(async (req, res) => {
 })
 
 const updateTweet = asyncHandler(async (req, res) => {
+    const { tweetId } = req.params;
+    const { text } = req.body;
 
-    const {tweetId} = req.params
-    const {text} = req.body
-    if(!text?.trim()){
-        throw new ApiError(400,"Tweet text is required")
-    }
-    if(!tweetId?.trim() || !mongoose.Types.ObjectId.isValid(tweetId)){
-        throw new ApiError(400,"Invalid tweet Id") 
-    }
-    const tweet = await Tweet.findById(tweetId)
-    if(!tweet){
-        throw new ApiError(404,"Tweet Not Found")
-    }
-    if(req.user?._id.toString() !== Tweet.owner?.toString()){
-        throw new ApiError(403,"You are not allowed to update this tweet")
+    if (!text?.trim()) {
+        throw new ApiError(400, "Tweet text is required");
     }
 
-    tweet.content = text
+    if (!tweetId?.trim() || !mongoose.Types.ObjectId.isValid(tweetId)) {
+        throw new ApiError(400, "Invalid tweet Id");
+    }
 
-    try{
-        const saveStatue = await tweet.save()
-        return res
-        .status(200)
-        .json(new ApiResponse(200,tweet,"Tweet updated successfully"))
+    const tweet = await Tweet.findById(tweetId);
+    if (!tweet) {
+        throw new ApiError(404, "Tweet Not Found");
     }
-    catch(error){
-        throw new ApiError(500,"Failed to update tweet")
+
+    if (req.user?._id.toString() !== tweet.owner?.toString()) {
+        throw new ApiError(403, "You are not allowed to update this tweet");
     }
-})
+
+    tweet.content = text;
+    await tweet.save();
+
+    return res.status(200).json(new ApiResponse(200, tweet, "Tweet updated successfully"));
+});
+
 
 const deleteTweet = asyncHandler(async (req, res) => {
 

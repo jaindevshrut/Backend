@@ -25,6 +25,7 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
+
 const deleteFromCloudinary = async(imageUrl) => {
     try {
         if(!imageUrl) throw "Image Url not correct"
@@ -37,10 +38,8 @@ const deleteFromCloudinary = async(imageUrl) => {
     }
 }
 
-const deleteVideoFromCloudinary = async (cloudUrl) => {
+const deleteVideoFromCloudinary = async (publicId) => {
     try {
-      // Extract the public ID from the URL
-      const publicId = extractPublicId(cloudUrl)
   
       const result = await cloudinary.uploader.destroy(publicId, {
         resource_type: "video",

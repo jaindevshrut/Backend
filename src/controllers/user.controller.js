@@ -31,7 +31,6 @@ const registerUser = asyncHandler(async (req,res)=>{
     // return response
 
     const {fullName, username, email, password} = req.body
-    console.log(req.body)
     if(
         [fullName, username, email, password].some((field) => field?.trim()==="")
     )
@@ -92,17 +91,17 @@ const loginUser = asyncHandler(async (req,res)=>{
     // send cookies
     // return response
 
-    const {email,username, password} = req.body
+    const { username, email, password } = req.body;
     console.log(req.body)
 
 
-    if (!(username||email)){
-        throw new ApiError(400,"Username or email is required")
+    if (!(username || email) && !password) {
+        throw new ApiError(400, "All fields are required");
     }
 
     const user = await User.findOne({
-        $or :[ { username, email }]
-    })
+        $or: [{ username }, { email }],
+    });
 
     if (!user){
         throw new ApiError(404,"User not found")
@@ -204,10 +203,9 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
 })
 
 const getCurrentUser = asyncHandler(async(req,res)=>{
-    console.log(req.user.avatar)
     return res
     .status(200)
-    .json(new ApiResponse(200,res.user,"User details fetched successfully"))
+    .json(new ApiResponse(200,req.user,"User details fetched successfully"))
 
 })
 
@@ -367,7 +365,7 @@ const getWatchHistory = asyncHandler(async(req,res) => {
             $lookup : {
                 from: "videos",
                 localField: "watchHistory",
-                foreignField: field,
+                foreignField: "_id",
                 as: "watchHistory",
                 pipeline: [
                     {
@@ -401,7 +399,7 @@ const getWatchHistory = asyncHandler(async(req,res) => {
 
     return res
     .status(200)
-    .json(200,user[0].watchHistory,"Watch history fetched successfully")    
+    .json(new ApiResponse(200,user[0].watchHistory,"Watch history fetched successfully"))    
 })
 
 

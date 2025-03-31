@@ -35,17 +35,17 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
     const {userId} = req.params
-    //TODO: get user playlists
+    
 
     if (!userId || !isValidObjectId(userId)) {
       throw new ApiError(400, "No user ID or Invalid user ID");
     }
   
     const userPlaylists = await Playlist.aggregate([
-      //match the owner's all playlists
+
       {
         $match: {
-          owner: mongoose.Types.ObjectId(userId),
+          owner: new mongoose.Types.ObjectId(userId),
         },
       },
       // lookup for getting owner's details
@@ -169,10 +169,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
     if(!playlist){
         throw new ApiError(404,"Playlist Not Found")
     }
-    if(!playlist.videos.includes(videoId)){
-        throw new ApiError(400,"Video not found in playlist")
-    }
-    if(req.user._id.toString() !== playlist.owner.toString()){
+    if(req.user?._id.toString() !== playlist.owner.toString()){
         throw new ApiError(403,"You are not allowed to add video to this playlist")
     }
     if(playlist.videos.includes(videoId)){
@@ -241,18 +238,19 @@ const deletePlaylist = asyncHandler(async (req, res) => {
 const updatePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     const {name, description} = req.body
-    if(!name || !description){
+    if(!name?.trim() && !description?.trim()){
         throw new ApiError(400,"Fields are required")
     }
     const playlist = await Playlist.findById(playlistId)
     if(!playlist){
         throw new ApiError(404,"Playlist Not Found")
     }
-    if(req.user._id.toString() !== playlist.owner.toString()){
+    if(req.user?._id.toString() !== playlist.owner.toString()){
         throw new ApiError(403,"You are not allowed to update this playlist")
     }
-    playlist.name = name.trim() || playlist.name;
-    playlist.description = description.trim() || playlist.description;
+    // playlist.name = name.trim() ? name.trim() : playlist.name; we want that if the name is correct then only it should be updated
+    if (name?.trim()) playlist.name = name.trim(); 
+    if (description?.trim()) playlist.description = description.trim();
     await playlist.save()
     return res
     .status(200)
