@@ -44,7 +44,7 @@ Learning backend by creating a YouTube-like website.
 
 4. Start the server:
     ```sh
-    npm start
+    npm run dev
     ```
 
 ## Usage
@@ -52,7 +52,9 @@ Learning backend by creating a YouTube-like website.
 1. Open your browser and navigate to `http://localhost:8000`
 2. Register a new account or log in if you already have one.
 3. Start uploading and watching videos!
-
+## Want TO have Fun ??
+Here You Try it
+![Navigate Here](https://www.postman.com/technical-engineer-50132623/public/collection/dr672ia/devtube?action=share&creator=41248414)
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
@@ -65,7 +67,8 @@ Contributions are welcome! Please follow these steps:
 
 ## Database Schema and Connection Diagram
 
-![Database Schema and Connection Diagram](https://app.eraser.io/workspace/HT6FQB8prIWyBYtLDVVv)
+![diagram-export-4-25-2025-2_54_26-PM](https://github.com/user-attachments/assets/cb8cfd75-15fa-4e4f-a3d5-0dbca5b4c15d)
+
 
 ## License
 
