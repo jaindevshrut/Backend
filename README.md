@@ -54,7 +54,7 @@ Learning backend by creating a YouTube-like website.
 3. Start uploading and watching videos!
 ## Want TO have Fun ??
 Here You Try it
-![Navigate Here](https://www.postman.com/technical-engineer-50132623/public/collection/dr672ia/devtube?action=share&creator=41248414)
+[Navigate Here](https://www.postman.com/technical-engineer-50132623/public/collection/dr672ia/devtube?action=share&creator=41248414)
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
